@@ -45,8 +45,8 @@ end
 def print_menu
   puts "1. Input the students"
   puts "2. Show the students"
-  puts "3. Save the list to students.csv"
-  puts "4. Load the list from students.csv"
+  puts "3. Save the list to a file"
+  puts "4. Load the list from a file"
   puts "9. Exit"  
 end
 
@@ -62,7 +62,7 @@ def process(selection)
   case selection
     when "1"
       input_students
-      puts "You have entered the students"
+      puts "You have added a student /students"
     when "2"
       show_students
       puts "These are all the students"
@@ -70,19 +70,25 @@ def process(selection)
       save_students
       puts "The students have been saved"
     when "4"
-      try_load_students
+      load_students
       puts "The students have been loaded"
     when "9"
       exit
     else
       puts "I don't know what you meant, try again"
   end
+  puts
 end
 
 # Save the students in a csv file
 def save_students
+  # get the file name
+  puts "Default file is #{filename}"
+  puts "Enter the name of the file or press return for default"
+  input = STDIN.gets.chomp
+  input.empty? ? save_file = filename : save_file = input
   # open the file for writing
-  file = File.open("students.csv", "w")
+  file = File.open(save_file, "w")
   # iterate over the array of students
   @students.each do |student|
     student_data = [student[:name], student[:cohort]]
@@ -90,22 +96,29 @@ def save_students
     file.puts csv_line
   end 
   file.close
+  puts "File chosen: #{save_file}"
 end
 
 # Load the saved list of students from the csv file
-def load_students(filename)
-  file = File.open(filename, "r")
+def load_students
+  load_file = filename
+  file = File.open(load_file, "r")
   file.readlines.each do |line|
     name, cohort = line.chomp.split(",")
     add_student(name, cohort)
   end
   file.close
+  puts "File chosen: #{load_file}"
+end
+
+# Default file
+def filename
+  ARGV.first.nil? ? "students.csv" : ARGV.first.chomp
 end
 
 # Load the list of students when the programme starts
-def try_load_students
-  filename = ARGV.first || "students.csv"
-  load_students(filename)
+def initial_load_students
+  load_students
   puts "Loaded #{@students.count} from #{filename}"
 end
 
@@ -117,5 +130,5 @@ def interactive_menu
   end
 end
 
-try_load_students
+initial_load_students
 interactive_menu
