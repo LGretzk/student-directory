@@ -83,10 +83,7 @@ end
 # Save the students in a csv file
 def save_students
   # get the file name
-  puts "Default file is #{filename}"
-  puts "Enter the name of the file or press return for default"
-  input = STDIN.gets.chomp
-  input.empty? ? save_file = filename : save_file = input
+  save_file = which_file
   # open the file for writing
   file = File.open(save_file, "w")
   # iterate over the array of students
@@ -116,6 +113,14 @@ def filename
   ARGV.first.nil? ? "students.csv" : ARGV.first.chomp
 end
 
+# Asks which file to load/save
+def which_file
+  puts "Default file is #{filename}"
+  puts "Enter the name of the file or press return for default"
+  input = STDIN.gets.chomp
+  input.empty? ? filename : input
+end
+
 # Load the list of students when the programme starts
 def initial_load_students
   load_students(filename)
@@ -125,10 +130,7 @@ end
 # Load the list of students based on a given file
 def subsequent_load_students
   # get the file name
-  puts "Default file is #{filename}"
-  puts "Enter the name of the file or press return for default"
-  input = STDIN.gets.chomp
-  input.empty? ? to_load = filename : to_load = input
+  to_load = which_file
   load_students(to_load)
 end
 
