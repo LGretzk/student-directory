@@ -67,7 +67,7 @@ def process(selection)
     when "3"
       save_students
     when "4"
-      load_students
+      try_load_students
     when "9"
       exit
     else
@@ -89,7 +89,7 @@ def save_students
 end
 
 # Load the saved list of students from the csv file
-def load_students(filename = "students.csv")
+def load_students(filename)
   file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort = line.chomp.split(",")
@@ -101,15 +101,9 @@ end
 
 # Load the list of students when the programme starts
 def try_load_students
-  filename = ARGV.first # first argument from the command line
-  return if filename.nil? # get out of the method if it isn't given
-  if File.exists?(filename) # if it exist
-    load_students(filename)
-    puts "Loaded #{@students.count} from #{filename}"
-  else # if it doesn't exist
-    puts "Sorry, #{filename} doesn't exist."
-    exit # quit the program
-  end 
+  filename = ARGV.first || "students.csv"
+  load_students(filename)
+  puts "Loaded #{@students.count} from #{filename}"
 end
 
 # Interactive menut
