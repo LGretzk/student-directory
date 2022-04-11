@@ -70,7 +70,7 @@ def process(selection)
       save_students
       puts "The students have been saved"
     when "4"
-      load_students
+      subsequent_load_students
       puts "The students have been loaded"
     when "9"
       exit
@@ -100,8 +100,8 @@ def save_students
 end
 
 # Load the saved list of students from the csv file
-def load_students
-  load_file = filename
+def load_students(to_load)
+  load_file = to_load
   file = File.open(load_file, "r")
   file.readlines.each do |line|
     name, cohort = line.chomp.split(",")
@@ -118,8 +118,18 @@ end
 
 # Load the list of students when the programme starts
 def initial_load_students
-  load_students
+  load_students(filename)
   puts "Loaded #{@students.count} from #{filename}"
+end
+
+# Load the list of students based on a given file
+def subsequent_load_students
+  # get the file name
+  puts "Default file is #{filename}"
+  puts "Enter the name of the file or press return for default"
+  input = STDIN.gets.chomp
+  input.empty? ? to_load = filename : to_load = input
+  load_students(to_load)
 end
 
 # Interactive menut
