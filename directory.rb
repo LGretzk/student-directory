@@ -62,12 +62,16 @@ def process(selection)
   case selection
     when "1"
       input_students
+      puts "You have entered the students"
     when "2"
       show_students
+      puts "These are all the students"
     when "3"
       save_students
+      puts "The students have been saved"
     when "4"
       try_load_students
+      puts "The students have been loaded"
     when "9"
       exit
     else
@@ -95,7 +99,6 @@ def load_students(filename)
     name, cohort = line.chomp.split(",")
     add_student(name, cohort)
   end
-  puts "Loaded #{@students.count} from #{filename} - load_students output"
   file.close
 end
 
