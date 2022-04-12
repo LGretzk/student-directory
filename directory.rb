@@ -1,3 +1,5 @@
+require "csv"
+
 @students = []
 
 # Add student to the aray of students
@@ -83,25 +85,22 @@ end
 # Save the students in a csv file
 def save_students
   save_file = which_file  # get the file name
-  open(save_file, mode = "w") { |file|   # open the file for writing
+  CSV.open(save_file, "w") do |csv|
     @students.each do |student|  # iterate over the array of students
-      student_data = [student[:name], student[:cohort]]
-      csv_line = student_data.join(",")
-      file.puts csv_line
-    end    
-  }
+        student_data = [student[:name], student[:cohort]]
+        csv << student_data
+      end   
+  end
   puts "File chosen: #{save_file}"
 end
 
 # Load the saved list of students from the csv file
 def load_students(to_load)
   load_file = to_load
-  open(load_file, mode = "r") { |file|
-    file.readlines.each do |line|
-      name, cohort = line.chomp.split(",")
-      add_student(name, cohort)
-    end  
-  }
+  CSV.foreach(load_file) do |row|
+    name, cohort = row
+    add_student(name, cohort) 
+  end
   puts "File chosen: #{load_file}"
 end
 
