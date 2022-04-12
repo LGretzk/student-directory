@@ -1,3 +1,4 @@
+# Inputs students
 def input_students
   puts "Please enter the names of the students"
   puts "To finish, just hit return twice"
@@ -38,11 +39,15 @@ def input_students
   students
 end
 
-def print_header
-  puts "The students of Villains Academy"
-  puts "-------------------"
+# Prints the header
+def print_header(students)
+  if !students.empty?
+    puts "The students of Villains Academy"
+    puts "-------------------"
+  end
 end
 
+# Prints students with hobbies
 def print(students)
   i = 0
   while i < students.length do
@@ -51,6 +56,7 @@ def print(students)
   end
 end
 
+# Prints students divided by cohorts
 def alt_print(students)
   # create a cohorts hash
   cohorts = {}
@@ -74,12 +80,13 @@ def alt_print(students)
   }
 end
 
+# Prints the footer
 def print_footer(students)
-  puts "Overall, we have #{students.count} great students"
+  puts students.count > 1 ? "Overall, we have #{students.count} great students" : "Overall, we have 1 great student."
 end
 
 students = input_students
-print_header
+print_header(students)
 print(students)
 print_footer(students)
 alt_print(students)
