@@ -82,29 +82,26 @@ end
 
 # Save the students in a csv file
 def save_students
-  # get the file name
-  save_file = which_file
-  # open the file for writing
-  file = File.open(save_file, "w")
-  # iterate over the array of students
-  @students.each do |student|
-    student_data = [student[:name], student[:cohort]]
-    csv_line = student_data.join(",")
-    file.puts csv_line
-  end 
-  file.close
+  save_file = which_file  # get the file name
+  open(save_file, mode = "w") { |file|   # open the file for writing
+    @students.each do |student|  # iterate over the array of students
+      student_data = [student[:name], student[:cohort]]
+      csv_line = student_data.join(",")
+      file.puts csv_line
+    end    
+  }
   puts "File chosen: #{save_file}"
 end
 
 # Load the saved list of students from the csv file
 def load_students(to_load)
   load_file = to_load
-  file = File.open(load_file, "r")
-  file.readlines.each do |line|
-    name, cohort = line.chomp.split(",")
-    add_student(name, cohort)
-  end
-  file.close
+  open(load_file, mode = "r") { |file|
+    file.readlines.each do |line|
+      name, cohort = line.chomp.split(",")
+      add_student(name, cohort)
+    end  
+  }
   puts "File chosen: #{load_file}"
 end
 
